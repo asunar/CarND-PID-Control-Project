@@ -34,9 +34,9 @@ int main()
 
   PID pid;
   // TODO: Initialize the pid variable.
-  double init_Kp = 0.183837;
+  double init_Kp = 0.1;
   double init_Ki = 0;
-  double init_Kd = 4.79995;
+  double init_Kd = 1.0;
   pid.Init(init_Kp, init_Ki, init_Kd);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
@@ -53,7 +53,7 @@ int main()
           // j[1] is the data JSON object
           double cte = std::stod(j[1]["cte"].get<std::string>());
           //double speed = std::stod(j[1]["speed"].get<std::string>());
-          //double angle = std::stod(j[1]["steering_angle"].get<std::string>());
+          double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           /*
           * TODO: Calcuate steering value here, remember the steering value is
           * [-1, 1].
@@ -61,7 +61,7 @@ int main()
           * another PID controller to control the speed!
           */
           pid.UpdateError(cte);
-          double steer_value = pid.getValue();
+          double steer_value = pid.TotalError();
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
 

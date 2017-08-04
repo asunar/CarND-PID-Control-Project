@@ -1,5 +1,4 @@
 #include "PID.h"
-#include <iostream>
 
 using namespace std;
 
@@ -11,36 +10,24 @@ PID::PID() {}
 
 PID::~PID() {}
 
+/*
+* Kp= Propotional gain, Ki = Integral gain, Kd = Differential gain
+*/
 void PID::Init(double Kp, double Ki, double Kd) {
-    this -> Kp = Kp;
-    this -> Ki = Ki;
-    this -> Kd = Kd;
-
-    p_error = 0;
-    i_error = 0;
-    d_error = 0;
+    this->Kp = Kp;
+    this->Ki = Ki;
+    this->Kd = Kd;
 }
 
 void PID::UpdateError(double cte) {
-	sum_cte += cte;
-  	p_error = - Kp * cte;
-  	i_error = - Ki * sum_cte;
-  	d_error = - Kd * (cte - prev_cte);
-  	prev_cte = cte;
-
-    total_error = cte;
-  	//std::cout << "updated error" << std::endl;
+    diffCte = cte - prevCte;
+    prevCte = cte;
+    sum += cte;
 }
 
+/*
+* Output = Proportional + Integral + Differential
+*/
 double PID::TotalError() {
-
-    return total_error;
+   return -Kp * prevCte - Kd * diffCte - Ki * sum;
 }
-
-double PID::getValue() {
-	double steeringAngle = p_error + i_error + d_error;
-	steeringAngle = steeringAngle<-1?-1:steeringAngle;
-	steeringAngle = steeringAngle>1?1:steeringAngle;
-	return steeringAngle;
-}
-
