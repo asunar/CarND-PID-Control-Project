@@ -90,3 +90,16 @@ that's just a guess.
 
 One last note here: regardless of the IDE used, every submitted project must
 still be compilable with cmake and make./
+
+
+## Reflections
+
+The effects of of the algorithm components:
+
+P: As the proportional component increases the steering angle of the car gets larger and larger i.e. the car tries to get to the reference trajectory faster. However, as P increases it also increases the amount of overshoot and causing the car to go off the track with high P values.
+
+I: Since working with simulator, it was assumed that there was no steering bias to adjust to. Integral component was left at 0.
+
+D: Differential component is used to avoid overshooting while the car tries to get to the reference trajectory. D component counter steers a little, helping the car stay on the track while approaching the reference trajectory. Given a constant P, as D component increases beyond a certain point the car veers off the track at the curves.
+
+I have used manual tuning to choose the final hyperparameters.
